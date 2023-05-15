@@ -29,9 +29,11 @@ function startCanvas() {
 	if(running) {
 		running = 0;
 		clearInterval(interval)
+		document.getElementById("startbutton").innerHMTL = "Start";
 	} else {
 		running = 1;
 		interval = setInterval(createRect,200);
+		document.getElementById("startbutton").innerHMTL = "Stop";
 	}
 }
 
