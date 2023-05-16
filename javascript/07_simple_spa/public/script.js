@@ -110,3 +110,100 @@ addContact = async () => {
 	}
 }
 
+getContactList = async () => {
+	const response = await fetch("/api/contact");
+	if(response.ok) {
+		let list = await response.json();
+		if(list){
+			populateTable(list);
+		}
+	} else {
+		console.log("Server responded with a status "+response.status+" "+response.statusText);
+	}
+} 
+
+populateTable = (list) => {
+	const root = document.getElementById("root");
+	const oldTable = document.getElementById("table");
+	if(oldTable) {
+		root.removeChild(oldTable);
+	}
+	const table = document.createElement("table");
+	table.setAttribute("id","table");
+	table.setAttribute("class","table table-striped");
+
+	//table headers
+	
+	const header = document.createElement("thead");
+	const headerRow = document.createElement("tr");
+	
+	const firstNameHeader = document.createElement("th");
+	const firstNameText = document.createTextNode("First Name");
+	firstNameHeader.appendChild(firstNameText);
+	
+	const lastNameHeader = document.createElement("th");
+	const lastNameText = document.createTextNode("Last Name");
+	lastNameHeader.appendChild(lastNameText);
+
+	const emailHeader = document.createElement("th");
+	const emailText = document.createTextNode("Email");
+	emailHeader.appendChild(emailText);
+
+	const phoneHeader = document.createElement("th");
+	const phoneText = document.createTextNode("Phone");
+	phoneHeader.appendChild(phoneText);
+
+	const removeHeader = document.createElement("th");
+	const removeText = document.createTextNode("Remove");
+	removeHeader.appendChild(removeText);
+
+	const editHeader = document.createElement("th");
+	const editText = document.createTextNode("Edit");
+	editHeader.appendChild(editText);
+	
+	headerRow.append(firstNameHeader,lastNameHeader,emailHeader,phoneHeader,removeHeader,editHeader);
+	header.appendChild(headerRow);
+	table.appendChild(header);
+	
+	//table body
+	const body = document.createElement("tbody");
+	for(let i=0;i<list.length;i++) {
+		const tableRow = document.createElement("tr");
+		for(x in list[i]) {
+			if(x === "id") {
+				continue;
+			}
+			const column = document.createElement("td");
+			const info = document.createTextNode(list[i][x]);
+			column.appendChild(info);
+			tableRow.append(column);
+		}
+		const removeColumn = document.createElement("td");
+		const removeButton = document.createElement("button");
+		removeButton.setAttribute("class","btn btn-danger");
+		const removeButtonText = document.createTextNode("Remove");
+		removeButton.appendChild(removeButtonText);
+		removeButton.addEventListener("click",function(e) {
+			console.log(list[i].id);
+		})
+		
+		const editColumn = document.createElement("td");
+		const editButton = document.createElement("button");
+		editButton.setAttribute("class","btn btn-secondary");
+		const editButtonText = document.createTextNode("Edit");
+		editButton.appendChild(editButtonText);
+		editButton.addEventListener("click",function(e) {
+			console.log(list[i]);
+		})
+		removeColumn.appendChild(removeButton);
+		editColumn.appendChild(editButton);
+		tableRow.append(removeColumn,editColumn);
+		body.appendChild(tableRow);
+	}
+	table.appendChild(body);
+
+	root.appendChild(table);
+}
+
+
+
