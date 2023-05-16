@@ -5,6 +5,7 @@ window.onload = function() {
 createForm = () => {
 	let root = document.getElementById("root");
 	let form = document.createElement("form");
+	form.setAttribute("class","m-3");
 	
 	//First name input and label
 	
