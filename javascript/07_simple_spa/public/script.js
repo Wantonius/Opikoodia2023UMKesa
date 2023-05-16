@@ -1,5 +1,6 @@
 window.onload = function() {
 	createForm();
+	getContactList();
 }
 
 createForm = () => {
@@ -105,6 +106,7 @@ addContact = async () => {
 		lastname.value = "";
 		email.value = "";
 		phone.value = "";
+		getContactList();
 	} else {
 		console.log("Server responded with a status "+response.status+" "+response.statusText);
 	}
