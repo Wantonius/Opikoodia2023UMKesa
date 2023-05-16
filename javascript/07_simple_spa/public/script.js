@@ -72,10 +72,41 @@ createForm = () => {
 	form.append(firstNameLabel,firstNameInput,lastNameLabel,lastNameInput,emailLabel,emailInput,phoneLabel,phoneInput,submitButton);
 	form.addEventListener("submit",function(e) {
 		e.preventDefault();
+		addContact();
 	})
+	
 	//Append to root
 	root.appendChild(form);
 
 }
 
+addContact = async () => {
+	const firstname = document.getElementById("firstname");
+	const lastname = document.getElementById("lastname");
+	const email = document.getElementById("email");
+	const phone = document.getElementById("phone");
+	let contact = {
+		"firstname":firstname.value,
+		"lastname":lastname.value,
+		"email":email.value,
+		"phone":phone.value
+	}
+	let url = "/api/contact";
+	let request = {
+		"method":"POST",
+		"headers":{
+			"Content-Type":"application/json"
+		},
+		"body":JSON.stringify(contact)
+	}
+	const response = await fetch(url,request);
+	if(response.ok) {
+		firstname.value = "";
+		lastname.value = "";
+		email.value = "";
+		phone.value = "";
+	} else {
+		console.log("Server responded with a status "+response.status+" "+response.statusText);
+	}
+}
 
