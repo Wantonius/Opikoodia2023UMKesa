@@ -122,6 +122,18 @@ getContactList = async () => {
 	} else {
 		console.log("Server responded with a status "+response.status+" "+response.statusText);
 	}
+}
+
+removeContact = async (id) => {
+	let request = {
+		"method":"DELETE"
+	}
+	const response = await fetch("/api/contact/"+id,request);
+	if(response.ok) {
+		getContactList();
+	} else {
+		console.log("Server responded with a status "+response.status+" "+response.statusText);
+	}
 } 
 
 populateTable = (list) => {
@@ -186,7 +198,7 @@ populateTable = (list) => {
 		const removeButtonText = document.createTextNode("Remove");
 		removeButton.appendChild(removeButtonText);
 		removeButton.addEventListener("click",function(e) {
-			console.log(list[i].id);
+			removeContact(list[i].id);
 		})
 		
 		const editColumn = document.createElement("td");
