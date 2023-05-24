@@ -4,7 +4,7 @@ import useCount from './hooks/useCount';
 
 function App() {
 	
-	const [value,add,substract] = useCount();
+	const [value,add,substract] = useCount(10);
 	
 	return (
 		<div className="App">
