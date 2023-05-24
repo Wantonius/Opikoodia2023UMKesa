@@ -8,7 +8,9 @@ const Label = (props) => {
 	}
 	
 	return(
-		<p style={labelStyle}>{props.color}</p>
+		<p style={labelStyle}
+			onClick={props.onColorChange}
+		>{props.color}</p>
 	)
 }
 

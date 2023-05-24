@@ -16,10 +16,22 @@ const Card = (props) => {
 		WebkitFilter:"drop-shadow(0px 0px 5px #666)"
 	}
 	
+	const onColorChange = () => {
+		let color = "#";
+		const letters = "ABCDEF0123456789";
+		for(let i=0;i<6;i++) {
+			let temp = Math.floor(Math.random()*16);
+			color = color + letters[temp]
+		}
+		setState({
+			color:color
+		})
+	}
+	
 	return (
 		<div style={cardStyle}>
 			<Square color={state.color}/>
-			<Label color={state.color}/>
+			<Label color={state.color} onColorChange={onColorChange}/>
 		</div>
 	)
 }
