@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import {useState} from 'react';
 import ContactForm from './components/ContactForm';
-
+import ContactList from './components/ContactList';
 function App() {
 	
 	const [state,setState] = useState({
@@ -34,6 +34,8 @@ function App() {
 	return (
 		<div className="App">
 			<ContactForm addContact={addContact}/>
+			<hr/>
+			<ContactList list={state.list} removeContact={removeContact}/>
 		</div>
 	);
 }
