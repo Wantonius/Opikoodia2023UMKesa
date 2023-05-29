@@ -35,7 +35,7 @@ const ContactForm = (props) => {
 	return(
 		<div style={{
 			"backgroundColor":"lightgreen",
-			"width":40%,
+			"width":"40%",
 			"margin":"auto"
 		}}>
 			<form onSubmit={onSubmit}>

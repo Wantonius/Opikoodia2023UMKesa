@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import {useState} from 'react';
+import ContactForm from './components/ContactForm';
 
 function App() {
 	
@@ -32,7 +33,7 @@ function App() {
 	
 	return (
 		<div className="App">
-
+			<ContactForm addContact={addContact}/>
 		</div>
 	);
 }
