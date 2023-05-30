@@ -1,6 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
 import {useState,useEffect} from 'react';
+import ShoppingForm from './components/ShoppingForm';
+
 function App() {
 	
 	const [state,setState] = useState({
@@ -105,7 +107,7 @@ function App() {
 	
 	return (
 		<div className="App">
-
+			<ShoppingForm addItem={addItem}/>
 		</div>
 	);
 }
