@@ -13,6 +13,12 @@ router.get("/shopping", function(req,res) {
 })
 
 router.post("/shopping", function(req,res) {
+	if(!req.body) {
+		return res.status(400).json({"Message":"Bad Request"})
+	}
+	if(!req.body.type) {
+		return res.status(400).json({"Message":"Bad Request"})
+	}
 	let item = new itemModel({
 		"type":req.body.type,
 		"count":req.body.count,
@@ -23,6 +29,16 @@ router.post("/shopping", function(req,res) {
 	}).catch(function(err) {
 		console.log(err);
 		return res.status(500).json({"Message":"Internal server error"})
+	})
+})
+
+router.delete("/shopping/:id",function(req,res) {
+	itemModel.deleteOne({"_id":req.params.id}).then(function(stats) {
+		console.log(stats);
+		return res.status(200).json({"Message":"Success"});
+	}).catch(function(err) {
+		console.log(err);
+		return res.status(500).json({"Message":"Internal server error"})		
 	})
 })
 module.exports = router;
