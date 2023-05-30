@@ -1,7 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const shoppingRoute = require("./routes/shoppingroute");
 
 let app = express();
+
+app.use(express.json());
 
 const mongo_url = process.env.MONGODB_URL;
 const mongo_user = process.env.MONGODB_USER;
@@ -15,6 +18,8 @@ mongoose.connect(url).then(
 	() => console.log("Connected to MongoDB"),
 	(error) => console.log("Failed to connect to MongoDB. Reason",error)
 )
+
+app.use("/api",shoppingRoute);
 
 app.listen(port);
 console.log("Running in port",port);
