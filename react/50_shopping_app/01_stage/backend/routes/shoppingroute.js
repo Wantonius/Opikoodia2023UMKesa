@@ -12,4 +12,17 @@ router.get("/shopping", function(req,res) {
 	})
 })
 
+router.post("/shopping", function(req,res) {
+	let item = new itemModel({
+		"type":req.body.type,
+		"count":req.body.count,
+		"price":req.body.price
+	})
+	item.save().then(function(item) {
+		return res.status(201).json(item)
+	}).catch(function(err) {
+		console.log(err);
+		return res.status(500).json({"Message":"Internal server error"})
+	})
+})
 module.exports = router;
