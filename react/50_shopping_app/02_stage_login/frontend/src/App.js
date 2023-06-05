@@ -3,6 +3,7 @@ import {useState,useEffect} from 'react';
 import ShoppingForm from './components/ShoppingForm';
 import ShoppingList from './components/ShoppingList';
 import Navbar from './components/Navbar';
+import LoginPage from './components/LoginPage';
 import {Routes,Route,Navigate} from 'react-router-dom';
 
 function App() {
@@ -135,7 +136,42 @@ function App() {
 						return;
 				}
 			} else {
-				console.log("Server responded with a status "+response.status+" "+response.statusText);
+				if(response.status === 403) {
+					clearState("Your session has expired. Logging you out.");
+					return;
+				}
+				let errorMessage = " Server responded with a status "+response.status+" "+response.statusText
+				switch(urlRequest.action) {
+					case "register":
+						if(response.status === 409) {
+							setError("Username already in use");
+							return;
+						} else {
+							setError("Register failed."+errorMessage);
+							return;
+						}
+					case "login":
+						setError("Login failed."+errorMessage);
+						return;
+					case "getlist":
+						setError("Failed to fetch shopping information."+errorMessage);
+						return;
+					case "additem":
+						setError("Failed to add new item."+errorMessage);
+						return;
+					case "removeitem":
+						setError("Failed to remove item."+errorMessage);
+						return;
+					case "edititem":
+						setError("Failed to edit item."+errorMessage);
+						return;
+					case "logout":
+						clearState("Server responded with an error. Logging you out.");
+						return;
+					default:
+						return;
+						
+				}
 			}
 		}
 		
@@ -247,16 +283,43 @@ function App() {
 		})
 	}
 	
-	return (
-		<div className="App">
-			<Navbar/>
-			<Routes>			
-				<Route path="/" element={<ShoppingList list={state.list} removeItem={removeItem} editItem={editItem}/>}/>
-				<Route path="/form" element={<ShoppingForm addItem={addItem}/>}/>
-				<Route path="*" element={<Navigate to="/"/>}/>
-			</Routes>
-		</div>
-	);
+	// RENDERING
+	
+	let message =<h4></h4>
+	if(state.loading) {
+		message = <h4>Loading ...</h4>
+	}
+	if(state.error) {
+		message = <h4>{state.error}</h4>
+	}
+	if(state.isLogged) {
+		return (
+			<div className="App">
+				<Navbar/>
+				<div style={{height:25, textAlign:"center"}}>
+					{message}
+				</div>
+				<Routes>			
+					<Route path="/" element={<ShoppingList list={state.list} removeItem={removeItem} editItem={editItem}/>}/>
+					<Route path="/form" element={<ShoppingForm addItem={addItem}/>}/>
+					<Route path="*" element={<Navigate to="/"/>}/>
+				</Routes>
+			</div>
+		);
+	} else {
+		return(
+			<div className="App">
+				<Navbar/>
+				<div style={{height:25, textAlign:"center"}}>
+					{message}
+				</div>
+				<Routes>			
+					<Route path="/" element={<LoginPage login={login} register={register} setError={setError}/>}/>
+					<Route path="*" element={<Navigate to="/"/>}/>
+				</Routes>
+			</div>		
+		)
+	}
 }
 
 export default App;
