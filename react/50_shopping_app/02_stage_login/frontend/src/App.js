@@ -268,6 +268,12 @@ function App() {
 			},
 			action:"login"
 		})
+		setState((state) => {
+			return {
+				...state,
+				user:user.username
+			}
+		})
 	}
 	
 	const logout = () => {
