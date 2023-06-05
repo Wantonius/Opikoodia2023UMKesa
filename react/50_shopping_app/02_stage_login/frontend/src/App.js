@@ -8,7 +8,12 @@ import {Routes,Route,Navigate} from 'react-router-dom';
 function App() {
 	
 	const [state,setState] = useState({
-		list:[]
+		list:[],
+		isLogged:false,
+		token:"",
+		loading:false,
+		error:"",
+		user:""
 	})
 	
 	const [urlRequest,setUrlRequest] = useState({
@@ -17,10 +22,55 @@ function App() {
 		action:""
 	})
 	
+	//HELPER FUNCTION
+	
 	useEffect(() => {
-		getList();
+		if(sessionStorage.getItem("state")) {
+			let state = JSON.parse(sessionStorage.getItem("state"));
+			setState(state);
+			if(state.isLogged) {
+				getList(state.token);
+			}
+		}
 	},[])
 	
+	const saveToStorage = (state) => {
+		sessionStorage.setItem("state",JSON.stringify(state));
+	}
+	
+	const setLoading = (loading) => {
+		setState((state) => {
+			return {
+				...state,
+				loading:loading,
+				error:""
+			}
+		})
+	}
+	
+	const setError = (error) => {
+		setState((state) => {
+			let tempState = {
+				...state,
+				error:error
+			}
+			saveToStorage(tempState);
+			return tempState;
+		})
+	}
+	
+	const clearState = (error) => {
+		let state = {
+			list:[],
+			isLogged:false,
+			loading:false,
+			token:"",
+			error:error,
+			user:""
+		}
+		saveToStorage(state);
+		setState(state);
+	}
 	//USEEFFECT
 	
 	useEffect(() => {
@@ -29,9 +79,11 @@ function App() {
 			if(!urlRequest.url) {
 				return;
 			}
+			setLoading(true);
 			const response = await fetch(urlRequest.url,urlRequest.request);
+			setLoading(false);
 			if(!response) {
-				console.log("No response.");
+				clearState("Server never responded. Logging you out. Try again later.");
 				return;
 			}
 			if(response.ok) {
@@ -39,16 +91,45 @@ function App() {
 					case "getlist":
 						const data = await response.json();
 						if(!data) {
+							setError("Failed to parse shopping information. Try again later.");
 							return;
 						}
-						setState({
-							list:data
+						setState((state) => {
+							let tempState = {
+								...state,
+								list:data
+							}
+							saveToStorage(tempState);
+							return tempState;
 						})
 						return;
 					case "additem":
 					case "removeitem":
 					case "edititem":
 						getList();
+						return;
+					case "register":
+						setError("Register success");
+						return;
+					case "login":
+						const loginData = await response.json();
+						if(!loginData) {
+							setError("Failed to parse login information. Try again later.");
+							return;
+						}
+						setState((state) => {
+							let tempState = {
+								...state,
+								isLogged:true,
+								token:loginData.token
+							}
+							saveToStorage(tempState);
+							return tempState;
+						})
+						getList(loginData.token);
+						return;
+					case "logout":
+						clearState("");
 						return;
 					default:
 						return;
@@ -63,11 +144,18 @@ function App() {
 	
 	//REST API
 	
-	const getList = () => {
+	const getList = (token) => {
+		let tempToken = state.token;
+		if(token) {
+			tempToken = token;
+		}
 		setUrlRequest({
 			url:"/api/shopping",
 			request:{
-				"method":"GET"
+				"method":"GET",
+				"headers":{
+					"token":tempToken
+				}
 			},
 			action:"getlist"			
 		})
@@ -79,7 +167,8 @@ function App() {
 			request:{
 				"method":"POST",
 				"headers":{
-					"Content-Type":"application/json"
+					"Content-Type":"application/json",
+					"token":state.token
 				},
 				"body":JSON.stringify(item)
 			},
@@ -91,7 +180,10 @@ function App() {
 		setUrlRequest({
 			url:"/api/shopping/"+id,
 			request:{
-				"method":"DELETE"
+				"method":"DELETE",
+				"headers":{
+					"token":state.token
+				}
 			},
 			action:"removeitem"
 		})
@@ -103,11 +195,55 @@ function App() {
 			request:{
 				"method":"PUT",
 				"headers":{
-					"Content-Type":"application/json"
+					"Content-Type":"application/json",
+					"token":state.token
 				},
 				"body":JSON.stringify(item)
 			},
 			action:"edititem"
+		})
+	}
+	
+	//LOGIN API
+	
+	const register = (user) => {
+		setUrlRequest({
+			url:"/register",
+			request:{
+				method:"POST",
+				headers:{
+					"Content-Type":"application/json"
+				},
+				body:JSON.stringify(user)
+			},
+			action:"register"
+		})
+	}
+	
+	const login = (user) => {
+		setUrlRequest({
+			url:"/login",
+			request:{
+				method:"POST",
+				headers:{
+					"Content-Type":"application/json"
+				},
+				body:JSON.stringify(user)
+			},
+			action:"login"
+		})
+	}
+	
+	const logout = () => {
+		setUrlRequest({
+			url:"/logout"
+			request:{
+				method:"POST",
+				headers:{
+					"token":state.token
+				}
+			},
+			action:"logout"
 		})
 	}
 	
