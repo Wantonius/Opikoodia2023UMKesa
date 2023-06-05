@@ -180,13 +180,17 @@ function App() {
 	
 	//REST API
 	
-	const getList = (token) => {
+	const getList = (token,search) => {
 		let tempToken = state.token;
 		if(token) {
 			tempToken = token;
 		}
+		let url = "/api/shopping";
+		if(search) {
+			url = url + "?type="+search;
+		}
 		setUrlRequest({
-			url:"/api/shopping",
+			url:url,
 			request:{
 				"method":"GET",
 				"headers":{
@@ -306,7 +310,7 @@ function App() {
 					{message}
 				</div>
 				<Routes>			
-					<Route path="/" element={<ShoppingList list={state.list} removeItem={removeItem} editItem={editItem}/>}/>
+					<Route path="/" element={<ShoppingList list={state.list} removeItem={removeItem} editItem={editItem} getList={getList}/>}/>
 					<Route path="/form" element={<ShoppingForm addItem={addItem}/>}/>
 					<Route path="*" element={<Navigate to="/"/>}/>
 				</Routes>
