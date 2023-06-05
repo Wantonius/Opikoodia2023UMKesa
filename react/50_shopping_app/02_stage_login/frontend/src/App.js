@@ -272,7 +272,7 @@ function App() {
 	
 	const logout = () => {
 		setUrlRequest({
-			url:"/logout"
+			url:"/logout",
 			request:{
 				method:"POST",
 				headers:{
