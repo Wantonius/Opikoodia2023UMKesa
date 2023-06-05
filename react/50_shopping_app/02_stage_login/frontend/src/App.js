@@ -295,7 +295,7 @@ function App() {
 	if(state.isLogged) {
 		return (
 			<div className="App">
-				<Navbar/>
+				<Navbar logout={logout} isLogged={state.isLogged} user={state.user}/>
 				<div style={{height:25, textAlign:"center"}}>
 					{message}
 				</div>
@@ -309,7 +309,7 @@ function App() {
 	} else {
 		return(
 			<div className="App">
-				<Navbar/>
+				<Navbar logout={logout} isLogged={state.isLogged} user={state.user}/>
 				<div style={{height:25, textAlign:"center"}}>
 					{message}
 				</div>
