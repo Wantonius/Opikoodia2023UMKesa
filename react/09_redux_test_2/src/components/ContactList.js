@@ -1,13 +1,21 @@
-const ContactList = (props) => {
+import {useDispatch,useSelector} from 'react-redux';
 
-	let contacts = props.list.map((contact) => {
+const ContactList = (props) => {
+	
+	const list = useSelector(state => state.list);
+	const dispatch = useDispatch();
+
+	let contacts = list.map((contact) => {
 		return(
 			<tr key={contact.id}>
 				<td>{contact.firstname}</td>
 				<td>{contact.lastname}</td>
 				<td>{contact.email}</td>
 				<td>{contact.phone}</td>
-				<td><button onClick={() => props.removeContact(contact.id)}>Remove</button></td>
+				<td><button onClick={() => dispatch({
+					type:"REMOVE_CONTACT",
+					id:contact.id
+				})}>Remove</button></td>
 			</tr>
 		)
 	})
