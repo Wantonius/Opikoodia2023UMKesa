@@ -95,7 +95,7 @@ const GameProvider = (props) => {
 			})
 			return;
 		}
-		if(tmepGuess === state.targetNumber) {
+		if(tempGuess === state.targetNumber) {
 			let noOfGuesses = state.noOfGuesses+1;
 			alert("Congrats "+state.playerName+"! You won with "+noOfGuesses+" guesses.");
 			setState({
