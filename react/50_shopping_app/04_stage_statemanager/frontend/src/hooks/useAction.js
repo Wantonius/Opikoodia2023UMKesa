@@ -72,7 +72,7 @@ const useAction = () => {
 						}
 						dispatch({
 							"type":actionConstants.FETCH_LIST_SUCCESS,
-							list:list
+							"list":list
 						})
 						return;
 					case "add":
