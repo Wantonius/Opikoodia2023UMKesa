@@ -1,5 +1,6 @@
 import React,{useState} from 'react';
 import Contact from '../models/Contact';
+import {useDispatch} from 'react-redux';
 
 interface State {
 	firstname:string;
@@ -8,11 +9,8 @@ interface State {
 	phone:string;
 }
 
-interface Props {
-	addContact(contact:Contact):void;
-}
 
-const ContactForm:React.FC<Props> = (props:Props) => {
+const ContactForm:React.FC<{}> = (props) => {
 	
 	const [state,setState] = useState<State>({
 		firstname:"",
@@ -20,6 +18,8 @@ const ContactForm:React.FC<Props> = (props:Props) => {
 		email:"",
 		phone:""
 	})
+	
+	const dispatch = useDispatch();
 	
 	const onChange = (event:React.ChangeEvent<HTMLInputElement>) => {
 		setState((state) => {
