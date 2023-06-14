@@ -33,7 +33,10 @@ const ContactForm:React.FC<{}> = (props) => {
 	const onSubmit = (event:React.SyntheticEvent) => {
 		event.preventDefault();
 		let contact = new Contact(state.firstname,state.lastname,state.email,state.phone,0);
-		props.addContact(contact);
+		dispatch({
+			"type":"ADD_CONTACT",
+			"contact":contact
+		})
 		setState({
 			firstname:"",
 			lastname:"",
