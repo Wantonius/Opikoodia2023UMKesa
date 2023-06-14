@@ -5,7 +5,7 @@ interface Props {
 	children:React.ReactNode;
 }
 
-const Headline:React.FC<Props> = (props:Props) => {
+const Paragraph:React.FC<Props> = (props:Props) => {
 	
 	const theme = useContext(ThemeContext);
 	
@@ -13,10 +13,10 @@ const Headline:React.FC<Props> = (props:Props) => {
 		...theme
 	}
 	return(
-		<h2 style={style}>
+		<p style={style}>
 			{props.children}
-		</h2>
+		</p>
 	)
 }
 
-export default Headline;
+export default Paragraph;

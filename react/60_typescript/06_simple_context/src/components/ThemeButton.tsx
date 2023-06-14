@@ -2,10 +2,10 @@ import React,{useContext} from 'react';
 import ThemeContext from '../context/ThemeContext';
 
 interface Props {
-	children:React.ReactNode;
+	toggleTheme():void;
 }
 
-const Headline:React.FC<Props> = (props:Props) => {
+const ThemeButton:React.FC<Props> = (props:Props) => {
 	
 	const theme = useContext(ThemeContext);
 	
@@ -13,10 +13,10 @@ const Headline:React.FC<Props> = (props:Props) => {
 		...theme
 	}
 	return(
-		<h2 style={style}>
-			{props.children}
-		</h2>
+		<button style={style} onClick={props.toggleTheme}>
+			Toggle Theme
+		</button>
 	)
 }
 
-export default Headline;
+export default ThemeButton;
