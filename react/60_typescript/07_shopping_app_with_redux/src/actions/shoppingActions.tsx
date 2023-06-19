@@ -63,7 +63,42 @@ export const edit = (token:string,item:ShoppingItem) => {
 }
 
 const handleFetch = async (request:Request,act:string,dispatch:ThunkDispatch<any,any,AnyAction>,token:string) => {
-	
+	dispatch(loading());
+	const response = await fetch(request);
+	dispatch(stopLoading());
+	if(!response) {
+		dispatch(logoutFailed("There was a network problem. Logging you out."))
+		return;
+	}
+	if(response.ok) {
+		switch(act) {
+			case "getlist":
+				let temp = await response.json();
+				if(!temp) {
+					dispatch(fetchItemFailed(actionConstants.FETCH_LIST_FAILED,"Failed to parse shopping information. Try again later"));
+					return;
+				}
+				let list = temp as ShoppingItem[];
+				dispatch(fetchListSuccess(list));
+				return;
+			case "add":
+				dispatch(fetchItemSuccess(actionConstants.ADD_ITEM_SUCCESS));
+				dispatch(getList(token));
+				return;
+			case "remove":
+				dispatch(fetchItemSuccess(actionConstants.REMOVE_ITEM_SUCCESS));
+				dispatch(getList(token));
+				return;
+			case "edit":
+				dispatch(fetchItemSuccess(actionConstants.EDIT_ITEM_SUCCESS));
+				dispatch(getList(token));
+				return;
+			default:
+				return;
+		} 
+	} else {
+		
+	}
 }
 
 //ACTION CREATORS
