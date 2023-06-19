@@ -56,7 +56,7 @@ export const edit = (token:string,item:ShoppingItem) => {
 				"Content-Type":"application/json",
 				"token":token
 			},
-			"body":JSON.stringfy(item)
+			"body":JSON.stringify(item)
 		})
 		handleFetch(request,"edit",dispatch,token);
 	}
