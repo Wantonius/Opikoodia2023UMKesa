@@ -23,7 +23,7 @@ const initialState = getInitialState();
 const shoppingReducer:Reducer<ShoppingState,AnyAction> = (state = initialState,action) => {
 	console.log("ShopppingReducer, action",action);
 	let tempState = {
-		...state;
+		...state
 	}
 	switch(action.type) {
 		case actionConstants.LOADING: 
