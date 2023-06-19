@@ -28,7 +28,7 @@ const LoginPage:React.FC<{}> = (props) => {
 		})
 	}
 	
-	const onRegister = (event:React.SynthenticEvent) => {
+	const onRegister = (event:React.SyntheticEvent) => {
 		event.preventDefault();
 		if(state.username.length <4 || state.password.length <8) {
 			dispatch(registerFailed("Username must be atleast 4 and password atleast 8 characters long."))
@@ -38,7 +38,7 @@ const LoginPage:React.FC<{}> = (props) => {
 		dispatch(register(user));
 	}
 	
-	const onLogin = (event:React.SynthenticEvent) => {
+	const onLogin = (event:React.SyntheticEvent) => {
 		event.preventDefault();
 		if(state.username.length <4 || state.password.length <8) {
 			dispatch(registerFailed("Username must be atleast 4 and password atleast 8 characters long."))
