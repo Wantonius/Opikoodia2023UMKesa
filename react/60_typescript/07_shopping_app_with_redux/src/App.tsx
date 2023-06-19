@@ -4,6 +4,7 @@ import './App.css';
 import LoginPage from './components/LoginPage';
 import {useSelector} from 'react-redux';
 import {AppState} from './types/states';
+import Navbar from './components/Navbar';
 
 function App() {
 	
@@ -22,6 +23,7 @@ function App() {
 	}
 	return (
 		<div className="App">
+			<Navbar/>
 			{messageArea}
 			<LoginPage/>
 		</div>
