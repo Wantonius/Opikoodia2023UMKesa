@@ -1,10 +1,10 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import LoginPage from './components/LoginPage';
 import {useSelector} from 'react-redux';
 import {AppState} from './types/states';
 import Navbar from './components/Navbar';
+import ShoppingForm from './components/ShoppingForm';
 
 function App() {
 	
@@ -21,13 +21,23 @@ function App() {
 	if(state.login.error) {
 		messageArea = <h4 style={{height:40}}>{state.login.error}</h4>
 	}
-	return (
-		<div className="App">
-			<Navbar/>
-			{messageArea}
-			<LoginPage/>
-		</div>
-	);
+	if(state.login.isLogged) {
+		return (
+			<div className="App">
+				<Navbar/>
+				{messageArea}
+				<ShoppingForm/>
+			</div>
+			);		
+	} else {
+		return (
+			<div className="App">
+				<Navbar/>
+				{messageArea}
+				<LoginPage/>
+			</div>
+		);
+	}
 }
 
 export default App;
