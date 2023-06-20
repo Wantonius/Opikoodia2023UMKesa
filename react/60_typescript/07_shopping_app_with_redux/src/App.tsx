@@ -5,6 +5,8 @@ import {useSelector} from 'react-redux';
 import {AppState} from './types/states';
 import Navbar from './components/Navbar';
 import ShoppingForm from './components/ShoppingForm';
+import ShoppingList from './components/ShoppingList';
+import {Routes,Route,Navigate} from 'react-router-dom';
 
 function App() {
 	
@@ -26,7 +28,11 @@ function App() {
 			<div className="App">
 				<Navbar/>
 				{messageArea}
-				<ShoppingForm/>
+				<Routes>
+					<Route path="/" element={<ShoppingList/>} />
+					<Route path="/form" element={<ShoppingForm/>} />
+					<Route path="*" element={<Navigate to="/"/>} />
+				</Routes>
 			</div>
 			);		
 	} else {
@@ -34,7 +40,10 @@ function App() {
 			<div className="App">
 				<Navbar/>
 				{messageArea}
-				<LoginPage/>
+				<Routes>
+					<Route path="/" element={<LoginPage/>} />
+					<Route path="*" element={<Navigate to="/"/>} />
+				</Routes>
 			</div>
 		);
 	}
