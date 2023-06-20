@@ -4,7 +4,7 @@ import ShoppingItem from '../models/ShoppingItem';
 interface Props {
 	item:ShoppingItem;
 	editItem(item:ShoppingItem):void;
-	changeMode(index:number,mode:string);void;
+	changeMode(index:number,mode:string):void;
 }
 
 interface State {
